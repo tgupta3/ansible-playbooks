@@ -1,0 +1,15 @@
+---
+# vars file for packages
+base_packages:
+  - python
+  - git
+  - htop
+  - tcpdump
+  - bridge-utils
+  - conntrack
+  - build-essential
+  - fakeroot
+  - openvswitch-switch
+
+debian_packages:
+  - iptables-persistent

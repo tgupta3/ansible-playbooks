@@ -1,0 +1,36 @@
+---
+- name: Check if netdata is present
+  stat:
+    path: /usr/sbin/netdata
+  register: netdataispresent
+
+- name: Install netdata
+  import_role:
+    name: mrlesmithjr.netdata
+  vars:
+    netdata_bind_to:
+      - "127.0.0.1"
+  when: (not netdataispresent['stat']['exists']) or
+        (force_netdata | default (false) | bool)
+
+- name: Enabe route_localnet for eth0
+  sysctl:
+    name: net.ipv4.conf.{{ mgmnt_interface }}.route_localnet
+    value: 1
+    sysctl_set: yes
+    state: present
+    reload: yes
+    ignoreerrors: yes
+
+- name: Add a DNAT rule to forward mgmnt:19999 to lo:19999
+  iptables:
+    table: nat
+    chain: PREROUTING
+    in_interface: "{{ mgmnt_interface }}"
+    protocol: tcp
+    destination_port: 19999
+    jump: DNAT
+    to_destination: 127.0.0.1:19999
+    comment: DNAT Netdata traffic to lo:19999
+  notify:
+    - iptables-debian-persist

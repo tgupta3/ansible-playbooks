@@ -1,0 +1,11 @@
+---
+
+- include: network-mgmnt.yml
+  when: env == "prod"
+  tags: ['bootstrap', 'network-mgmnt']
+
+- include: packages.yml
+  tags: ['bootstrap', 'packages']
+
+- include: netdata.yml
+  tags: ['bootstrap', 'netdata']
