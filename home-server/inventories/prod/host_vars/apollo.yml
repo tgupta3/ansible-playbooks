@@ -1,3 +1,8 @@
 ---
 
 mgmnt_interface: enp6s0
+br0_interfaces:
+  - interface: enp38s0
+    link: present
+  - interface: enp37s0
+    link: absent

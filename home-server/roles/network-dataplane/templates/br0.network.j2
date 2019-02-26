@@ -1,0 +1,12 @@
+[Match]
+Name=br0
+
+[Network]
+DHCP = ipv4
+LinkLocalAddressing = no
+IPv6AcceptRA = no
+
+[DHCP]
+UseDNS = true
+RouteMetric = 200
+Hostname = {{ ansible_hostname }}-br0

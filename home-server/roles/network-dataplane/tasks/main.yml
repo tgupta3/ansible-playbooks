@@ -1,0 +1,34 @@
+---
+- name: Add BR0
+  openvswitch_bridge:
+    bridge: br0
+    state: present
+  tags: ['network-dataplane', 'ovs-br0']
+
+- name: Add ports to br0
+  openvswitch_port:
+    bridge: br0
+    port: "{{ item.interface }}"
+    state: "{{ item.link }}"
+  loop: "{{ br0_interfaces }}"
+  tags: ['network-dataplane', 'ovs-br0']
+
+- name: Configure br0 interface
+  template:
+    src: br0.network.j2
+    dest: /etc/systemd/network/br0.network
+    force: yes
+  notify:
+    - Restart networkd
+  tags: ['network-dataplane', 'ovs-br0']
+
+- name: Configure br0 physical interfaces
+  template:
+    src: "{{ item.interface }}.network.j2"
+    dest: "/etc/systemd/network/{{ item.interface }}.network"
+    force: yes
+  loop: "{{ br0_interfaces }}"
+  when: item.link == "present"
+  notify:
+    - Restart networkd
+  tags: ['network-dataplane', 'ovs-br0']

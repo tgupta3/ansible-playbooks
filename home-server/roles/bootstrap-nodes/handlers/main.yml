@@ -1,5 +1,11 @@
 ---
-  
+
 - name: iptables-debian-persist
   shell: iptables-save > /etc/iptables/rules.v4
   when: ansible_os_family == "Debian"
+
+- name: Restart networkd
+  systemd:
+    name: systemd-networkd
+    state: restarted
+  

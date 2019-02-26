@@ -4,3 +4,4 @@
   become: yes
   roles:
     - bootstrap-nodes
+    - network-dataplane

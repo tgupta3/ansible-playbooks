@@ -10,10 +10,5 @@
     src: network-mgmnt/mgmnt.network.j2
     dest: /etc/systemd/network/mgmnt.network
     force: yes
-  register: mgmnt
-
-- name: Restart networkd
-  systemd:
-    name: systemd-networkd
-    state: restarted
-  when: mgmnt.changed
+  notify:
+    - Restart networkd
