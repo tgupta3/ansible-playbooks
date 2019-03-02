@@ -10,6 +10,18 @@ base_packages:
   - build-essential
   - fakeroot
   - openvswitch-switch
+  - snapd
+  - apparmor
+  - apparmor-utils
+  - qemu-kvm
+  - libvirt-daemon-system
+  - libvirt-clients
+  - lxc
+  - python-lxml
 
 debian_packages:
   - iptables-persistent
+  - python-libvirt
+  - cloud-image-utils
+  - qemu-utils
+  - virtinst

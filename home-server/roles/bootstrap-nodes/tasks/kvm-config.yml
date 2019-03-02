@@ -1,0 +1,12 @@
+---
+
+- name: Configure KVM pool
+  virt_pool:
+    command: define
+    name: default
+    xml: '{{ lookup("template", "files/pool-default.xml.j2") }}'
+
+- name: Autostart the default pool
+  virt_pool:
+    autostart: yes
+    name: default

@@ -5,3 +5,4 @@
   roles:
     - bootstrap-nodes
     - network-dataplane
+    - kvm-vms

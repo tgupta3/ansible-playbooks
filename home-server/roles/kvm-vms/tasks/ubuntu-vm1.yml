@@ -1,0 +1,38 @@
+---
+
+- name: Create VMs
+  import_role:
+    name: ansible-role-libvirt-vm
+  vars:
+    libvirt_vms:
+      - state: present
+        name: 'eve'
+        memory_mb:  16384
+        vcpus: 6
+        xml_file: eve-template.xml.j2
+        autostart: False
+        volumes:
+          - name: 'eve-vol1'
+            device: 'disk'
+            format: 'qcow2'
+            capacity: '100GB'
+            pool: 'default'
+            image: "http://localhost:8000/EVE.qcow2"
+        interfaces:
+          - type: direct
+            source:
+                dev: br0
+                mode: bridge
+  when: not destroy_eve | default('false') | bool
+
+- name: Destroy VM
+  import_role:
+    name: ansible-role-libvirt-vm
+  vars:
+    libvirt_vms:
+      - state: absent
+        name: 'eve'
+        volumes:
+          - name: 'eve-vol1'
+            pool: 'default'
+  when: destroy_eve | default('false') | bool

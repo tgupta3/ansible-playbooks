@@ -9,3 +9,6 @@
 
 - include: netdata.yml
   tags: ['bootstrap', 'netdata']
+
+- include: kvm-config.yml
+  tags: ['bootstrap', 'kvm-config']
