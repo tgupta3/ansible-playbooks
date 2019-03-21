@@ -3,3 +3,6 @@
 
 - include: ubuntu-vm1.yml
   tags: ['kvm-vms', 'ubuntu-vm1']
+
+- include: nfv-vm.yml
+  tags: ['kvm-vms', 'nfv-vm1']

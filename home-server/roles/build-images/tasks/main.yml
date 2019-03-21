@@ -1,0 +1,4 @@
+---
+
+- include: nfv-vm1.yml
+  tags: ['nfv-vm1']

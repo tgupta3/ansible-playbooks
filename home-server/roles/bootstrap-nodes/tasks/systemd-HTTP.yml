@@ -1,0 +1,11 @@
+---
+
+- name: Create systemnd file for pythonSimpleHTTP
+  template: src=systemd-services/simplehttp.service.j2 dest=/etc/systemd/system/simplehttp.service mode=644
+
+- name: start HTTP server
+  systemd:
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+    name: simplehttp.service

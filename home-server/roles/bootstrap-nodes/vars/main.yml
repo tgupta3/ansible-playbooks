@@ -25,3 +25,7 @@ debian_packages:
   - cloud-image-utils
   - qemu-utils
   - virtinst
+  - ca-certificates
+  - virt-manager
+  - libvirt-bin
+  - libguestfs-tools

@@ -1,0 +1,38 @@
+---
+
+- name: Create VMs
+  import_role:
+    name: ansible-role-libvirt-vm
+  vars:
+    libvirt_vms:
+      - state: present
+        name: 'nfv-vm1'
+        memory_mb:  4096
+        vcpus: 2
+        xml_file: nfv-template.xml.j2
+        autostart: False
+        volumes:
+          - name: 'nfvvm1-vol1'
+            device: 'disk'
+            format: 'qcow2'
+            capacity: '8GB'
+            pool: 'default'
+            image: "http://localhost:8008/nfv-vm1.img"
+        interfaces:
+          - type: direct
+            source:
+                dev: br0
+                mode: bridge
+  when: not destroy_nfv_vm1 | default('false') | bool
+
+- name: Destroy VM
+  import_role:
+    name: ansible-role-libvirt-vm
+  vars:
+    libvirt_vms:
+      - state: absent
+        name: 'nfv-vm1'
+        volumes:
+          - name: 'nfv-vol1'
+            pool: 'default'
+  when: destroy_nfv_vm1 | default('false') | bool

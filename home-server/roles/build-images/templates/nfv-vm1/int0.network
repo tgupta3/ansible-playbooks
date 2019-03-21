@@ -1,0 +1,10 @@
+[Match]
+MACAddress = {{ mac_nfv_vm1 }}
+
+[Network]
+DHCP = ipv4
+LinkLocalAddressing = no
+IPv6AcceptRA = no
+
+[DHCP]
+UseDNS = true

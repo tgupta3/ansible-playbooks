@@ -29,6 +29,7 @@
 {% if interface.type is defined and interface.type == 'direct' %}
     <interface type='bridge'>
       <source bridge='{{ interface.source.dev }}'/>
+      <mac address='{{ mac_nfv_vm1 }}'/>
       <virtualport type='openvswitch'/>
 {% else %}
     <interface type='network'>

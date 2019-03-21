@@ -12,3 +12,6 @@
 
 - include: kvm-config.yml
   tags: ['bootstrap', 'kvm-config']
+
+- include: systemd-HTTP.yml
+  tags: ['bootstrap', 'systemdhttp']
