@@ -1,0 +1,3 @@
+---
+libvirt_image_dir: /var/lib/libvirt/images/
+backup_dir: /home/{{ ansible_ssh_user }}/kvm-images/backup-images

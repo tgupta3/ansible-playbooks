@@ -1,4 +1,7 @@
 ---
+- name: Set image to use
+  set_fact:
+    img_name :  "{{ backup_img | default('nfv-vm1.img', true) }}"
 
 - name: Create VMs
   import_role:
@@ -17,7 +20,7 @@
             format: 'qcow2'
             capacity: '8GB'
             pool: 'default'
-            image: "http://localhost:8008/nfv-vm1.img"
+            image: "http://localhost:8008/{{ img_name }}"
         interfaces:
           - type: direct
             source:
@@ -33,6 +36,6 @@
       - state: absent
         name: 'nfv-vm1'
         volumes:
-          - name: 'nfv-vol1'
+          - name: 'nfvvm1-vol1'
             pool: 'default'
   when: destroy_nfv_vm1 | default('false') | bool

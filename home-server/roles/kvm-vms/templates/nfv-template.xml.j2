@@ -16,6 +16,11 @@
   <cpu{% if cpu_mode is not none %} mode='{{ cpu_mode }}'{% endif %}>
     <model fallback='allow'/>
   </cpu>
+  <features>
+    <acpi/>
+    <apic/>
+    <pae/>
+  </features>
   <devices>
     <emulator>{{ libvirt_vm_emulator }}</emulator>
 {% for volume in volumes %}
