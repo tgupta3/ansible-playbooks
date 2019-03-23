@@ -4,7 +4,6 @@
     name: nfv-vm1
     command: shutdown
 
-
 - name: Make sure VM is stopped
   virt:
     name: nfv-vm1
