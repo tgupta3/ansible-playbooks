@@ -5,6 +5,11 @@
     '{{ item.key }}': '{{ item.value }}'
   loop: "{{ lookup('dict', nfv_vm1) }}"
 
+- name: Overwrite image name if restoring
+  set_fact:
+    img_name: 'backup-images/{{ backup_img }}.qcow2'
+  when: restore_nfv_vm1 is defined and restore_nfv_vm1
+
 - name: Create VMs
   import_role:
     name: ansible-role-libvirt-vm

@@ -1,0 +1,7 @@
+skip_list:
+  - 703
+  - 701
+  - 301
+  - 305
+use_default_rules: true
+verbosity: 3

@@ -1,0 +1,8 @@
+---
+# tasks file for roles/restore-vm
+- import_role:
+    name: kvm-vms
+    tasks_from: nfv-vm1
+  vars:
+    restore_nfv_vm1: True
+  tags: ['never', 'restore-nfv-vm1']
