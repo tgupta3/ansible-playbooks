@@ -1,0 +1,6 @@
+---
+nfv_vm1:
+  name: nfv-vm1
+  vol1: nfvvm1-vol1
+  backup_img: backup-nfv-vm1
+  img_name: nfv-vm1.img

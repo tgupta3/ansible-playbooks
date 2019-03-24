@@ -1,41 +1,66 @@
 ---
-- name: Stop VM is running
+
+- name: set_facts for this vm
+  set_fact:
+    '{{ item.key }}': '{{ item.value }}'
+  loop: "{{ lookup('dict', nfv_vm1) }}"
+
+- name: Check for VM presence
   virt:
-    name: nfv-vm1
-    command: shutdown
+    name: '{{ name }}'
+    command: get_xml
+  register: vm_presence
+  ignore_errors: True
 
-- name: Make sure VM is stopped
-  virt:
-    name: nfv-vm1
-    command: status
-  register: task_result
-  ignore_errors: yes
-  retries: 10
-  until: task_result['status'] == 'shutdown'
-  delay: 1
+- block:
+  - name: Get current state
+    virt:
+      name: '{{ name }}'
+      command: status
+    register: current_state
 
-- name: Destroy VM if failed to stop
-  virt:
-    name: nfv-vm1
-    command: destroy
-  when: task_result['failed']
+  - name: Stop VM is running
+    virt:
+      name: '{{ name }}'
+      command: shutdown
+    ignore_errors: True
+    when: current_state['status'] == 'running'
 
-- name: Create Snapshot
-  shell: qemu-img snapshot -c backup-nfv-vm1 nfvvm1-vol1
-  args:
-    chdir: '{{ libvirt_image_dir }}'
+  - name: Make sure VM is stopped
+    virt:
+      name: '{{ name }}'
+      command: status
+    register: task_result
+    ignore_errors: yes
+    retries: 60
+    until: task_result['status'] == 'shutdown'
+    delay: 3
 
-- name: Create Snapshot Qcow2
-  shell: 'qemu-img convert -f qcow2 -O qcow2 -s backup-nfv-vm1 nfvvm1-vol1 {{ backup_dir }}/backup-nfv-vm1.qcow2'
-  args:
-    chdir: '{{ libvirt_image_dir }}'
+  - name: Destroy VM if failed to stop
+    virt:
+      name: '{{ name }}'
+      command: destroy
+    when: task_result['failed']
 
-- name: Delete Snapshot
-  shell: qemu-img snapshot -d backup-nfv-vm1 nfvvm1-vol1
-  args:
-    chdir: '{{ libvirt_image_dir }}'
+  - name: Create Snapshot
+    shell: 'qemu-img snapshot -c {{ backup_img }} {{ vol1 }}'
+    args:
+      chdir: '{{ libvirt_image_dir }}'
 
-- name: Start the VM
-  virt:
-    name: nfv-vm1
-    command: start
+  - name: Create Snapshot Qcow2
+    shell: 'qemu-img convert -f qcow2 -O qcow2 -s {{ backup_img }} {{ vol1 }} {{ backup_dir }}/{{ backup_img }}.qcow2'
+    args:
+      chdir: '{{ libvirt_image_dir }}'
+
+  - name: Delete Snapshot
+    shell: 'qemu-img snapshot -d {{ backup_img }} {{ vol1 }}'
+    args:
+      chdir: '{{ libvirt_image_dir }}'
+
+  - name: Start the VM
+    virt:
+      name: '{{ name }}'
+      command: start
+    when: current_state['status'] == 'running'
+
+  when: not vm_presence.failed

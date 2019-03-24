@@ -1,7 +1,9 @@
 ---
-- name: Set image to use
+
+- name: set_facts for this vm
   set_fact:
-    img_name :  "{{ backup_img | default('nfv-vm1.img', true) }}"
+    '{{ item.key }}': '{{ item.value }}'
+  loop: "{{ lookup('dict', nfv_vm1) }}"
 
 - name: Create VMs
   import_role:
@@ -9,13 +11,13 @@
   vars:
     libvirt_vms:
       - state: present
-        name: 'nfv-vm1'
-        memory_mb:  4096
-        vcpus: 2
+        name: '{{ name }}'
+        memory_mb:  1024
+        vcpus: 1
         xml_file: nfv-template.xml.j2
         autostart: False
         volumes:
-          - name: 'nfvvm1-vol1'
+          - name: '{{ vol1 }}'
             device: 'disk'
             format: 'qcow2'
             capacity: '8GB'
@@ -34,8 +36,8 @@
   vars:
     libvirt_vms:
       - state: absent
-        name: 'nfv-vm1'
+        name: '{{ name }}'
         volumes:
-          - name: 'nfvvm1-vol1'
+          - name: '{{ vol1 }}'
             pool: 'default'
   when: destroy_nfv_vm1 | default('false') | bool

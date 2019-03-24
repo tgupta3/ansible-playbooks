@@ -1,2 +1,3 @@
 ---
 image_dir: /home/{{ myuser }}/kvm-images
+base_img: basev3.img

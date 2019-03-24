@@ -2,14 +2,19 @@
 - name: Set fact for user #Need to set this explictly for cleanup task
   set_fact: myuser="{{ ansible_ssh_user }}"
 
+- name: Set_facts for this vm
+  set_fact:
+    '{{ item.key }}': '{{ item.value }}'
+  loop: "{{ lookup('dict', nfv_vm1) }}"
+
 - name: Create a copy of base image
   become: no
-  shell: cp basev2.img nfv-vm1.img
+  shell: 'cp {{ base_img }} {{ img_name }}'
   args:
     chdir: '{{ image_dir }}'
 
 - name: Add hostname
-  shell: virt-customize -a nfv-vm1.img --hostname nfv-vm1
+  shell: 'virt-customize -a {{ img_name }} --hostname nfv-vm1'
   args:
     chdir: '{{ image_dir }}'
 
@@ -18,7 +23,7 @@
   template: src=nfv-vm1/int0.network dest=/home/{{ ansible_ssh_user }}/kvm-images/nfv-vm1.int0.network
 
 - name: Configure Network
-  shell: virt-customize -a nfv-vm1.img --upload nfv-vm1.int0.network:/etc/systemd/network
+  shell: 'virt-customize -a {{ img_name }} --upload nfv-vm1.int0.network:/etc/systemd/network'
   args:
     chdir: '{{ image_dir }}'
 
