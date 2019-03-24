@@ -17,8 +17,8 @@
     libvirt_vms:
       - state: present
         name: '{{ name }}'
-        memory_mb: 1024
-        vcpus: 1
+        memory_mb: 6144
+        vcpus: 4
         xml_file: nfv-controller-template.xml.j2
         autostart: False
         volumes:
