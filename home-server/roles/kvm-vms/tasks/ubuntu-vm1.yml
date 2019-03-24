@@ -7,7 +7,7 @@
     libvirt_vms:
       - state: present
         name: 'eve'
-        memory_mb:  16384
+        memory_mb: 16384
         vcpus: 6
         xml_file: eve-template.xml.j2
         autostart: False
@@ -21,8 +21,8 @@
         interfaces:
           - type: direct
             source:
-                dev: br0
-                mode: bridge
+              dev: br0
+              mode: bridge
   when: not destroy_eve | default('false') | bool
 
 - name: Destroy VM
