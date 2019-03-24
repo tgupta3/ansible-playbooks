@@ -6,3 +6,6 @@
 
 - include: nfv-vm1.yml
   tags: ['kvm-vms', 'nfv-vm1']
+
+- include: nfv-controller.yml
+  tags: ['kvm-vms', 'nfv-controller']

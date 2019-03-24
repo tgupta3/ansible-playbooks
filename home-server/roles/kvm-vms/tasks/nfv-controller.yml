@@ -1,0 +1,48 @@
+---
+
+- name: set_facts for this vm
+  set_fact:
+    '{{ item.key }}': '{{ item.value }}'
+  loop: "{{ lookup('dict', nfv_controller) }}"
+
+- name: Overwrite image name if restoring
+  set_fact:
+    img_name: 'backup-images/{{ backup_img }}.qcow2'
+  when: restore_nfv_controller is defined and restore_nfv_controller
+
+- name: Create VMs
+  import_role:
+    name: ansible-role-libvirt-vm
+  vars:
+    libvirt_vms:
+      - state: present
+        name: '{{ name }}'
+        memory_mb: 1024
+        vcpus: 1
+        xml_file: nfv-controller-template.xml.j2
+        autostart: False
+        volumes:
+          - name: '{{ vol1 }}'
+            device: 'disk'
+            format: 'qcow2'
+            capacity: '8GB'
+            pool: 'default'
+            image: "http://localhost:8008/{{ img_name }}"
+        interfaces:
+          - type: direct
+            source:
+              dev: br0
+              mode: bridge
+  when: not destroy_nfv_controller | default('false') | bool
+
+- name: Destroy VM
+  import_role:
+    name: ansible-role-libvirt-vm
+  vars:
+    libvirt_vms:
+      - state: absent
+        name: '{{ name }}'
+        volumes:
+          - name: '{{ vol1 }}'
+            pool: 'default'
+  when: destroy_nfv_controller | default('false') | bool

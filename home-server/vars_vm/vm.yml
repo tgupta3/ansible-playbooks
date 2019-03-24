@@ -4,3 +4,9 @@ nfv_vm1:
   vol1: nfvvm1-vol1
   backup_img: backup-nfv-vm1
   img_name: nfv-vm1.img
+
+nfv_controller:
+  name: nfv-controller
+  vol1: nfvcontroller-vol1
+  backup_img: backup-nfv-controller
+  img_name: nfv-controller.img

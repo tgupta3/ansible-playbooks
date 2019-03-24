@@ -2,3 +2,6 @@
 # tasks file for roles/backup-vms
 - include: nfv-vm1.yml
   tags: ['backup-nfv-vm1']
+
+- include: nfv-controller.yml
+  tags: ['backup-nfv-controller']

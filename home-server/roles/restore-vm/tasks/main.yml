@@ -6,3 +6,10 @@
   vars:
     restore_nfv_vm1: True
   tags: ['never', 'restore-nfv-vm1']
+
+- import_role:
+    name: kvm-vms
+    tasks_from: nfv-controller
+  vars:
+    restore_nfv_controller: True
+  tags: ['never', 'restore-nfv-controller']

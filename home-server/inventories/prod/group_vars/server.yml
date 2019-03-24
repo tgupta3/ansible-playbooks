@@ -1,3 +1,4 @@
 ---
 env: prod
 mac_nfv_vm1: 10:D1:C4:39:F5:B7
+mac_nfv_controller: 94:9A:14:F5:67:92
