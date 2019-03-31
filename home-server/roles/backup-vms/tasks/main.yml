@@ -5,3 +5,6 @@
 
 - include: nfv-controller.yml
   tags: ['backup-nfv-controller']
+
+- include: eve-ng.yml
+  tags: ['backup-eve-ng']

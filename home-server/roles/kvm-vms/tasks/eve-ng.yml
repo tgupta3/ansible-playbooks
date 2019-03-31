@@ -1,23 +1,33 @@
 ---
 
+- name: set_facts for this vm
+  set_fact:
+    '{{ item.key }}': '{{ item.value }}'
+  loop: "{{ lookup('dict', eve_ng) }}"
+
+- name: Overwrite image name if restoring
+  set_fact:
+    img_name: 'backup-images/{{ backup_img }}.qcow2'
+  when: restore_eve is defined and restore_eve
+
 - name: Create VMs
   import_role:
     name: ansible-role-libvirt-vm
   vars:
     libvirt_vms:
       - state: present
-        name: 'eve'
+        name: '{{ name }}'
         memory_mb: 16384
         vcpus: 6
         xml_file: eve-template.xml.j2
         autostart: False
         volumes:
-          - name: 'eve-vol1'
+          - name: '{{ vol1 }}'
             device: 'disk'
             format: 'qcow2'
             capacity: '100GB'
             pool: 'default'
-            image: "http://localhost:8000/EVE.qcow2"
+            image: "http://localhost:8008/{{ img_name }}"
         interfaces:
           - type: direct
             source:
@@ -31,8 +41,8 @@
   vars:
     libvirt_vms:
       - state: absent
-        name: 'eve'
+        name: '{{ name }}'
         volumes:
-          - name: 'eve-vol1'
+          - name: '{{ vol1 }}'
             pool: 'default'
   when: destroy_eve | default('false') | bool

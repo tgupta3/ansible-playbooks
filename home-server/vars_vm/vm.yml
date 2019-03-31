@@ -10,3 +10,9 @@ nfv_controller:
   vol1: nfvcontroller-vol1
   backup_img: backup-nfv-controller
   img_name: nfv-controller.img
+
+eve_ng:
+  name: eve-ng
+  vol1: eve-vol1
+  backup_img: backup-eve-ng
+  img_name: EVE.qcow2

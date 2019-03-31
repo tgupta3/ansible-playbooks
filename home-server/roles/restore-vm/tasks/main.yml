@@ -13,3 +13,11 @@
   vars:
     restore_nfv_controller: True
   tags: ['never', 'restore-nfv-controller']
+
+
+- import_role:
+    name: kvm-vms
+    tasks_from: eve-ng
+  vars:
+    restore_eve: True
+  tags: ['never', 'restore-eve-ng']
