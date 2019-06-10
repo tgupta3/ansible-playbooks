@@ -1,0 +1,36 @@
+---
+- name: Set fact for user #Need to set this explictly for cleanup task
+  set_fact: myuser="{{ ansible_ssh_user }}"
+
+- name: Set_facts for this vm
+  set_fact:
+    '{{ item.key }}': '{{ item.value }}'
+  loop: "{{ lookup('dict', unifi) }}"
+
+- name: Create a copy of base image
+  become: no
+  shell: 'cp {{ base_img }} {{ img_name }}'
+  args:
+    chdir: '{{ image_dir }}'
+
+- name: Add hostname
+  shell: 'virt-customize -a {{ img_name }} --hostname unifi'
+  args:
+    chdir: '{{ image_dir }}'
+
+- name: Copy interface template to destination
+  become: no
+  template: src=unifi/int0.network dest=/home/{{ ansible_ssh_user }}/kvm-images/unifi.int0.network
+
+- name: Configure Network
+  shell: 'virt-customize -a {{ img_name }} --upload unifi.int0.network:/etc/systemd/network'
+  args:
+    chdir: '{{ image_dir }}'
+
+- name: Cleanup
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - '{{ image_dir }}/unifi.int0.network'
+    - '/tmp/unifi.img'

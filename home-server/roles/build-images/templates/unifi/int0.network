@@ -1,0 +1,10 @@
+[Match]
+MACAddress = {{ mac_unifi }}
+
+[Network]
+DHCP = ipv4
+LinkLocalAddressing = no
+IPv6AcceptRA = no
+
+[DHCP]
+UseDNS = true

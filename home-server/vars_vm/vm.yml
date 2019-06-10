@@ -16,3 +16,9 @@ eve_ng:
   vol1: eve-vol1
   backup_img: backup-eve-ng
   img_name: EVE.qcow2
+
+unifi:
+  name: unifi
+  vol1: unifi-vol1
+  backup_img: backup-unifi
+  img_name: unifi.img

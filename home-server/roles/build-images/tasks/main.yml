@@ -5,3 +5,6 @@
 
 - include: nfv-controller.yml
   tags: ['nfv-controller']
+
+- include: unifi.yml
+  tags: ['unifi']
