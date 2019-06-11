@@ -21,3 +21,10 @@
   vars:
     restore_eve: True
   tags: ['never', 'restore-eve-ng']
+
+- import_role:
+    name: kvm-vms
+    tasks_from: unifi
+  vars:
+    restore_unifi: True
+  tags: ['never', 'restore-unifi']
