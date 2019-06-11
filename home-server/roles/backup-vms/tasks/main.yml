@@ -8,3 +8,6 @@
 
 - include: eve-ng.yml
   tags: ['backup-eve-ng']
+
+- include: unifi.yml
+  tags: ['backup-unifi']
