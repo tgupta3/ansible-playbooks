@@ -1,0 +1,48 @@
+---
+
+- name: set_facts for this vm
+  set_fact:
+    '{{ item.key }}': '{{ item.value }}'
+  loop: "{{ lookup('dict', unifi) }}"
+
+- name: Overwrite image name if restoring
+  set_fact:
+    img_name: 'backup-images/{{ backup_img }}.qcow2'
+  when: restore_unifi is defined and restore_unifi
+
+- name: Create VMs
+  import_role:
+    name: ansible-role-libvirt-vm
+  vars:
+    libvirt_vms:
+      - state: present
+        name: '{{ name }}'
+        memory_mb: 2048
+        vcpus: 2
+        xml_file: unifi-template.xml.j2
+        autostart: False
+        volumes:
+          - name: '{{ vol1 }}'
+            device: 'disk'
+            format: 'qcow2'
+            capacity: '8GB'
+            pool: 'default'
+            image: "http://localhost:8008/{{ img_name }}"
+        interfaces:
+          - type: direct
+            source:
+              dev: br0
+              mode: bridge
+  when: not destroy_unifi | default('false') | bool
+
+- name: Destroy VM
+  import_role:
+    name: ansible-role-libvirt-vm
+  vars:
+    libvirt_vms:
+      - state: absent
+        name: '{{ name }}'
+        volumes:
+          - name: '{{ vol1 }}'
+            pool: 'default'
+  when: destroy_unifi | default('false') | bool

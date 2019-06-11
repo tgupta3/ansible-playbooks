@@ -9,3 +9,6 @@
 
 - include: nfv-controller.yml
   tags: ['kvm-vms', 'nfv-controller']
+
+- include: unifi.yml
+  tags: ['kvm-vms', 'unifi']
