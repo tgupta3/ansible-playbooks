@@ -1,0 +1,2 @@
+[nuc]
+grasshopper ansible_host=grasshopper.localdomain ansible_user=tushar

@@ -1,0 +1,17 @@
+[Match]
+Name = {{ docker_100.name }}
+
+[Network]
+Address = {{ docker_100.gateway }}/{{ docker_100.mask }}
+LinkLocalAddressing = no
+IPv6AcceptRA = no
+
+[RoutingPolicyRule]
+From = {{ docker_100.subnet }}
+Table = {{ vlan.0.id }}
+Priority = {{ vlan.0.id }}
+
+[Route]
+Destination = {{ docker_100.subnet }}
+Table = {{ vlan.0.id }}
+Metric = 45

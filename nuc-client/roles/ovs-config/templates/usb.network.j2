@@ -1,0 +1,13 @@
+[Match]
+Name = enx*
+
+
+[Network]
+DHCP = ipv4
+LinkLocalAddressing = no
+IPv6AcceptRA = no
+
+[DHCP]
+UseDNS = no
+RouteMetric = 200
+Hostname = {{ ansible_hostname }}-usb

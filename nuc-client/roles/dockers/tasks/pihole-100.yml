@@ -1,0 +1,48 @@
+---
+
+- name: Ensures {{ ansible_env.HOME }}/etc/ dir exists
+  file:
+    path: "{{ ansible_env.HOME }}/etc/"
+    state: directory
+
+- name: Overwrite Resolv.conf
+  copy:
+    content: "nameserver 127.0.0.1\nnameserver 10.100.0.1\n"
+    dest: "{{ ansible_env.HOME }}/etc/overwrite_resolv.conf"
+    force: true
+
+- name: "Setup the pi-hole docker container"
+  docker_container:
+    name: "{{ docker_pihole_100.name }}"
+    image: "{{ docker_pihole_100.image }}"
+    state: started
+    restart: true
+    restart_policy: unless-stopped
+    networks_cli_compatible: true
+    networks:
+      - name: "{{ docker_pihole_100.networks }}"
+    volumes: "{{ docker_pihole_100.volumes }}"
+    env:
+      TZ: "{{ docker_pihole_100.timezone }}"
+      WEBPASSWORD: "{{ docker_pihole_100.password }}"
+      ServerIP: "{{ docker_pihole_100.server_ip }}"
+      DNS1: 81.17.17.170
+      DNS2: 169.38.73.5
+    capabilities: NET_ADMIN
+    dns_servers:
+      - "127.0.0.1"
+    ports: "{{ docker_pihole_100.ports }}"
+    healthcheck:
+      test: "dig +retry=0 @{{ docker_pihole_100.server_ip }} pi.hole || exit 1"
+
+- name: Modify FTL.conf for custom settings
+  copy:
+    content: "RESOLVE_IPV6=no\n"
+    dest: "{{ ansible_env.HOME }}/etc/pihole-{{ vlan.0.name }}/pihole-FTL.conf"
+    force: true
+
+- name: Custom DNS for domains
+  copy:
+    content: "max-ttl=15\nmax-cache-ttl=15\nserver=/crashlytics.com/208.67.222.222\n"
+    dest: "{{ ansible_env.HOME }}/etc/dnsmasq-d{{ vlan.0.name }}/02-mydomain.conf"
+    force: true

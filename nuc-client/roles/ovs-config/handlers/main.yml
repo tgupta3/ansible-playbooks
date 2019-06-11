@@ -1,0 +1,7 @@
+---
+# handlers file for ovs-config
+
+- name: Restart networkd
+  systemd:
+    name: systemd-networkd
+    state: restarted

@@ -1,0 +1,18 @@
+---
+
+- name: Add bridges for vlan
+  openvswitch_bridge:
+    bridge: "br0.{{ item.name }}"
+    parent: br0
+    vlan: "{{ item.id }}"
+    state: present
+  loop: "{{ vlan }}"
+
+- name: Create interface file for bridges
+  template:
+    src: "br0-{{ item.name }}.network.j2"
+    dest: "/etc/systemd/network/br0-{{ item.name }}.network"
+    force: yes
+  loop: "{{ vlan }}"
+  notify:
+    - Restart networkd

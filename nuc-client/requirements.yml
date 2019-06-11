@@ -1,0 +1,6 @@
+---
+# From Github
+- src: https://www.github.com/geerlingguy/ansible-role-docker.git
+- src: https://www.github.com/geerlingguy/ansible-role-pip.git
+
+# From Galaxy

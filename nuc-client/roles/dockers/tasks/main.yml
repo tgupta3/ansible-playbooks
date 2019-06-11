@@ -1,0 +1,4 @@
+---
+# tasks file for dockers
+- include: pihole-100.yml
+  tags: ['dockers', 'pihole-100']

@@ -1,0 +1,11 @@
+---
+# vars file for packages
+base_packages:
+  - python
+  - htop
+  - tcpdump
+  - bridge-utils
+  - conntrack
+  - build-essential
+  - fakeroot
+  - openvswitch-switch

@@ -1,0 +1,21 @@
+---
+
+- name: Remove netplan
+  file:
+    path: /etc/netplan/
+    state: absent
+
+- name: Configure Mgmnt interfaces
+  template:
+    src: mgmnt.network.j2
+    dest: /etc/systemd/network/mgmnt.network
+    force: true
+  notify:
+    - Restart networkd
+
+- name: Enable systemd-networkd
+  systemd:
+    name: systemd-networkd
+    enabled: true
+    state: restarted
+    daemon_reload: true
