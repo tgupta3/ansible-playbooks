@@ -11,29 +11,22 @@
     dest: "{{ ansible_env.HOME }}/etc/overwrite_resolv.conf"
     force: true
 
-- name: "Setup the pi-hole docker container"
-  docker_container:
-    name: "{{ docker_pihole_100.name }}"
-    image: "{{ docker_pihole_100.image }}"
-    state: started
-    restart: true
-    restart_policy: unless-stopped
-    networks_cli_compatible: true
-    networks:
-      - name: "{{ docker_pihole_100.networks }}"
-    volumes: "{{ docker_pihole_100.volumes }}"
-    env:
-      TZ: "{{ docker_pihole_100.timezone }}"
-      WEBPASSWORD: "{{ docker_pihole_100.password }}"
-      ServerIP: "{{ docker_pihole_100.server_ip }}"
-      DNS1: 81.17.17.170
-      DNS2: 169.38.73.5
-    capabilities: NET_ADMIN
-    dns_servers:
-      - "127.0.0.1"
-    ports: "{{ docker_pihole_100.ports }}"
-    healthcheck:
-      test: "dig +retry=0 @{{ docker_pihole_100.server_ip }} pi.hole || exit 1"
+- name: Spin up pihole
+  import_tasks: pihole_base.yml
+  vars:
+    docker_pihole:
+      name: "{{ docker_pihole_100.name }}"
+      image: "{{ docker_pihole_100.image }}"
+      restart: true
+      networks:
+        - name: "{{ docker_pihole_100.networks }}"
+      volumes: "{{ docker_pihole_100.volumes }}"
+      env:
+        timezone: "{{ docker_pihole_100.timezone }}"
+        password: "{{ docker_pihole_100.password }}"
+        server_ip: "{{ docker_pihole_100.server_ip }}"
+        dns1: 81.17.17.170
+      ports: "{{ docker_pihole_100.ports }}"
 
 - name: Modify FTL.conf for custom settings
   copy:
