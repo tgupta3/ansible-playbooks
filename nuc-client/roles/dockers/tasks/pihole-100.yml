@@ -25,7 +25,7 @@
         timezone: "{{ docker_pihole_100.timezone }}"
         password: "{{ docker_pihole_100.password }}"
         server_ip: "{{ docker_pihole_100.server_ip }}"
-        dns1: 81.17.17.170
+        dns1: 54.183.15.10
       ports: "{{ docker_pihole_100.ports }}"
 
 - name: Modify FTL.conf for custom settings

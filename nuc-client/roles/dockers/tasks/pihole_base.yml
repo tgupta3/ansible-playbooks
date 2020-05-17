@@ -4,6 +4,7 @@
   docker_container:
     name: "{{ docker_pihole.name }}"
     image: "{{ docker_pihole.image }}"
+    pull: "yes"
     state: "{{ docker_pihole.state | default('started') }}"
     restart: "{{ docker_pihole.restart }}"
     restart_policy: "{{ docker_pihole.restart_policy | default('unless-stopped') }}"
