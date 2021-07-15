@@ -3,19 +3,3 @@
 
 - include: packages.yml
   tags: ['bootstrap', 'packages']
-
-- include: base-network.yml
-  tags: ['bootstrap', 'base-network']
-
-- name: Install Docker
-  import_role:
-    name: ansible-role-docker
-  tags: ['bootstrap', 'docker-install']
-
-- name: Install Docker
-  vars:
-    pip_install_packages:
-      - name: docker
-  import_role:
-    name: ansible-role-pip
-  tags: ['bootstrap', 'docker-pip']
