@@ -11,6 +11,8 @@ configure_hosts:
     stage: bootstrap
     allow_failure: false
     script:
+        - ping 192.168.0.1 -c 1
+        - ping 10.50.0.100 -c 1
         - ansible --version
         - cd nuc-client
         - ansible-playbook main.yml -i hosts
