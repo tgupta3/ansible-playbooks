@@ -11,10 +11,12 @@ variables:
 predeploy:
     stage: predeploy
     script:
-      - ansible -i hosts all -m ping --extra-vars "ansible_password=$ANSIBLE_SSHKEY" 
+      - cd nuc-client
+      - ansible -i hosts all -m ping --extra-vars "ansible_password=${ANSIBLE_SSHKEY}" 
+
 configure_hosts:
     stage: bootstrap
     allow_failure: false
     script:
         - cd nuc-client
-        - ansible-playbook main.yml -i hosts --extra-vars "ansible_password=$ANSIBLE_SSHKEY"
+        - ansible-playbook main.yml -i hosts --extra-vars "ansible_password=${ANSIBLE_SSHKEY}"
