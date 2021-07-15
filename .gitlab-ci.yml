@@ -19,4 +19,4 @@ configure_hosts:
     allow_failure: false
     script:
         - cd nuc-client
-        - ansible-playbook main.yml -i hosts --extra-vars "ansible_password=${ANSIBLE_SSHKEY}"
+        - ansible-playbook main.yml -i hosts --extra-vars "ansible_become_pass=${ANSIBLE_SSHKEY} ansible_password=${ANSIBLE_SSHKEY}"
