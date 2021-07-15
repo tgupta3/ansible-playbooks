@@ -5,3 +5,4 @@ base_packages:
   - htop
   - tcpdump
   - build-essential
+  - net-tools
