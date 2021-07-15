@@ -1,4 +1,5 @@
 stages:
+    - predeploy
     - bootstrap
 
 image: registry.gitlab.com/torese/docker-ansible
@@ -7,12 +8,13 @@ variables:
     ANSIBLE_HOST_KEY_CHECKING: 'false'
     ANSIBLE_FORCE_COLOR: 'true'
 
+predeploy:
+    stage: predeploy
+    script:
+      - ansible -i hosts all -m ping --extra-vars "ansible_password=$ANSIBLE_SSHKEY" 
 configure_hosts:
     stage: bootstrap
     allow_failure: false
     script:
-        - ping 192.168.0.1 -c 1
-        - ping 10.50.0.100 -c 1
-        - ansible --version
         - cd nuc-client
         - ansible-playbook main.yml -i hosts
