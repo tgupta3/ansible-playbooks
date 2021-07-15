@@ -1,0 +1,16 @@
+stages:
+    - bootstrap
+
+image: registry.gitlab.com/torese/docker-ansible
+
+variables:
+    ANSIBLE_HOST_KEY_CHECKING: 'false'
+    ANSIBLE_FORCE_COLOR: 'true'
+
+configure_hosts:
+    stage: bootstrap
+    allow_failure: false
+    script:
+        - ansible --version
+        - cd nuc-client
+        - ansible-playbook main.yml -i hosts
