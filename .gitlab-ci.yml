@@ -13,6 +13,8 @@ image: registry.gitlab.com/torese/docker-ansible
 variables:
     ANSIBLE_HOST_KEY_CHECKING: 'false'
     ANSIBLE_FORCE_COLOR: 'true'
+    TARGET:
+      value: 'nuc'
 
 predeploy:
     stage: predeploy
