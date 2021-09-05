@@ -15,6 +15,10 @@ variables:
     ANSIBLE_FORCE_COLOR: 'true'
     TARGET:
       value: 'nuc'
+      description: "Target to run the playbook on"
+    PLAYBOOK:
+      value: 'none.yml'
+      description: "Playbook to run"
 
 predeploy:
     stage: predeploy
