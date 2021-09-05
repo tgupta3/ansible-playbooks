@@ -6,7 +6,7 @@ workflow:
 
 stages:
     - predeploy
-    - bootstrap
+    - deploy
 
 image: registry.gitlab.com/torese/docker-ansible
 
@@ -18,11 +18,11 @@ predeploy:
     stage: predeploy
     script:
       - cd nuc-client
-      - ansible -i hosts all -m ping --extra-vars "ansible_password=${ANSIBLE_SSHKEY}" 
+      - ansible -i hosts ${TARGET} -m ping --extra-vars "ansible_password=${ANSIBLE_SSHKEY}" 
 
 configure_hosts:
-    stage: bootstrap
+    stage: deploy
     allow_failure: false
     script:
         - cd nuc-client
-        - ansible-playbook main.yml -i hosts --extra-vars "ansible_become_pass=${ANSIBLE_SSHKEY} ansible_password=${ANSIBLE_SSHKEY}"
+        - ansible-playbook ${PLAYBOOK} -i hosts --extra-vars "target=${TARGET} ansible_become_pass=${ANSIBLE_SSHKEY} ansible_password=${ANSIBLE_SSHKEY}"
