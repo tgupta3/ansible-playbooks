@@ -6,3 +6,8 @@ base_packages:
   - tcpdump
   - build-essential
   - net-tools
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - software-properties-common
+  - gnupg-agent
