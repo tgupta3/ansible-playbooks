@@ -3,6 +3,12 @@
   gather_facts: true
   become: true
   tasks:
+    - name: install requirements
+      local_action: ansible.builtin.command ansible-galaxy collection install {{ item }}
+      loop: 
+        - community.docker
+      run_once: true
+    
     - name: Create a network
       community.docker.docker_network:
         name: untrust_lan
