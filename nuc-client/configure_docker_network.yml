@@ -1,0 +1,16 @@
+---
+- hosts: '{{ target }}'
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Create a network
+      community.docker.docker_network:
+        name: untrust_lan
+        driver: ipvlan
+        ipam_config:
+          - subnet: 10.100.0.0/24
+            iprange: 10.100.0.112/28  
+        driver_options:
+          ipvlan_mode: l2
+          parent: enp2s0.100
+
