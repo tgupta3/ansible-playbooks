@@ -9,7 +9,8 @@
         driver: ipvlan
         ipam_config:
           - subnet: 10.100.0.0/24
-            iprange: 10.100.0.112/28  
+            iprange: 10.100.0.112/28
+            gatewya: 10.100.0.1
         driver_options:
           ipvlan_mode: l2
           parent: enp2s0.100
