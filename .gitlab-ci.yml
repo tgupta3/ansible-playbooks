@@ -8,7 +8,7 @@ stages:
     - predeploy
     - deploy
 
-image: registry.gitlab.com/torese/docker-ansible
+image: registry.gitlab.com/tgupta3/docker-ansible-runner@sha256:11398fe7ce3079c9739b1e552f6df40890c49705e45bad6f3967243aff232c65
 
 variables:
     ANSIBLE_HOST_KEY_CHECKING: 'false'
