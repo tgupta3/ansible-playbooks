@@ -11,3 +11,4 @@ base_packages:
   - curl
   - software-properties-common
   - gnupg-agent
+  - py3-pip
