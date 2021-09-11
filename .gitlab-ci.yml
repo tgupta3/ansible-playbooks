@@ -8,7 +8,7 @@ stages:
     - predeploy
     - deploy
 
-image: registry.gitlab.com/tgupta3/docker-ansible-runner@sha256:11398fe7ce3079c9739b1e552f6df40890c49705e45bad6f3967243aff232c65
+image: registry.gitlab.com/tgupta3/docker-ansible-runner@sha256:618252856d1b43d48cdc04339ac34be44f0ffdac38f8e74402eb7e45e0823d7a
 
 variables:
     ANSIBLE_HOST_KEY_CHECKING: 'false'
@@ -25,6 +25,7 @@ predeploy:
     script:
       - cd nuc-client
       - ansible -i hosts ${TARGET} -m ping --extra-vars "ansible_password=${ANSIBLE_SSHKEY}" 
+      - ansible-playbook ${PLAYBOOK} -i hosts --extra-vars "target=${TARGET} ansible_become_pass=${ANSIBLE_SSHKEY} ansible_password=${ANSIBLE_SSHKEY}" --check
 
 configure_hosts:
     stage: deploy
