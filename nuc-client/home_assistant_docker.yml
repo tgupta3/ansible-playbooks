@@ -1,0 +1,26 @@
+---
+
+- hosts: '{{ target }}'
+  gather_facts: true
+  become: true
+  vars:
+    work_dir: "/home/dockeruser/homeassistant"
+    docker_user: dockeruser
+    docker_group: dockergroup  
+  tasks:
+
+    - name: Ensure the service config directory is present
+      file:
+        path: "{{ work_dir }}"
+        owner: "{{ docker_user }}"
+        group: "{{ docker_group }}"
+        state: directory
+        mode: 0755
+    
+    - name: Container present
+      docker_container:
+        name: mycontainer
+        state: started
+        image: alpine
+        user: "{{ docker_user }}:{{ docker_group }}"
+        command: sleep infinity
