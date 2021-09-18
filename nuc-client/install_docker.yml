@@ -22,3 +22,9 @@
         name: docker
         state: started
         enabled: yes
+  
+    - name: Create docker user/group
+      user:
+        name: dockeruser
+        group: dockergroup
+        state: present
