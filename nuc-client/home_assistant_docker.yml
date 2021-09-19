@@ -52,6 +52,6 @@
           - name: "untrust_lan"
             ipv4_address: "10.100.0.112"
         volumes:
-          - "{{ work_dir }}/config":/config
+          - "{{ work_dir }}/config:/config"
         state: started
         restart_policy: unless-stopped
