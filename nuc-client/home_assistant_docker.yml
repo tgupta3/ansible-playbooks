@@ -6,7 +6,7 @@
   vars:
     work_dir: "/home/dockeruser/homeassistant"
     docker_user: dockeruser
-    docker_group: dockergroup  
+    docker_group: dockergroup
   tasks:
 
     - name: Ensure the service config directory is present
@@ -21,11 +21,13 @@
       shell: "id -u {{ docker_user }}"
       register: user_id
       failed_when: user_id.rc != 0
+      check_mode: no
 
     - name: Get id of group
       shell: "getent group {{ docker_group }} | cut -d: -f3"
       register: group_id
       failed_when: group_id.stdout | length == 0
+      check_mode: no
 
     - name: Container present
       docker_container:
