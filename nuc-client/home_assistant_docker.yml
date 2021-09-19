@@ -29,10 +29,29 @@
       failed_when: group_id.stdout | length == 0
       check_mode: no
 
+    - name: Ensure the config directory is present
+      file:
+        path: "{{ work_dir }}/config"
+        owner: "{{ docker_user }}"
+        group: "{{ docker_group }}"
+        state: directory
+        mode: 0755
+
+    # linuxserver/homeassistant:version-2021.9.7
     - name: Container present
       docker_container:
-        name: mycontainer
+        name: homeassistant
+        image: ghcr.io/linuxserver/homeassistant@sha256:de146ed8ffd70fdd90ecb5a8e41a7cc637b46cc2950e0de03b42ba41bd6b2ef2
+        env:
+          PUID: "{{ user_id.stdout }}"
+          PGID: "{{ group_id.stdout }}"
+          TZ: America/Los_Angeles
+        published_ports:
+          - "8123:8123"
+        networks:
+          - name: "untrust_lan"
+            ipv4_address: "10.100.0.112"
+        volumes:
+          - "{{ work_dir }}/config":/config
         state: started
-        image: alpine
-        user: "{{ user_id.stdout }}:{{ group_id.stdout }}"
-        command: sleep infinity
+        restart_policy: unless-stopped
