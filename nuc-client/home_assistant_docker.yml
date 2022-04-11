@@ -41,7 +41,7 @@
     - name: Container present
       docker_container:
         name: homeassistant
-        image: ghcr.io/linuxserver/homeassistant:stable
+        image: ghcr.io/home-assistant/home-assistant:stable
         env:
           PUID: "{{ user_id.stdout }}"
           PGID: "{{ group_id.stdout }}"
